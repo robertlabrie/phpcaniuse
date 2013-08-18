@@ -1,0 +1,19 @@
+{
+    "name": "robertlabrie/phpcaniuse",
+    "description": "Check user agent against caniuse.com database",
+    "license": "LGPL V2.1",
+    "authors": [
+        {
+            "name": "robertlabrie",
+            "email": "robert.labrie@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "CanIUse": "src/"
+        }
+    }
+}
