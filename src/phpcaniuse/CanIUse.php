@@ -40,7 +40,16 @@ class CanIUse
 		foreach ($feature as $f)
 		{
 			$stat = $browserCan[$f];	//get the stat for this feature
-			$iStat = $this->statsMap[$stat];
+			if (array_key_exists($stat,$this->statsMap))
+			{
+				$iStat = $this->statsMap[$stat];
+			}
+			else
+			{
+				//during testing I found a stat "a #3". What am I supposed to do with that?
+				//In an unknown stat appears, I'll flag it as unknown
+				$iStat = -1;
+			}
 			if ($iStat < $supported) { $supported = $iStat; }
 		}
 		//at the end, invert statsMap and return the character
