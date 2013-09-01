@@ -40,14 +40,23 @@ class CanIUse
 		foreach ($feature as $f)
 		{
 			$stat = $browserCan[$f];	//get the stat for this feature
+			
+			//per Alexis Deveria the #'s will relate to specific notes
+			//no notes here, so drop them
+			$hashtag = strpos($stat,"#");
+			if ($hashtag !== false)
+			{
+				$stat = trim(substr($stat,0,$hashtag));
+			}
+			
+			
 			if (array_key_exists($stat,$this->statsMap))
 			{
 				$iStat = $this->statsMap[$stat];
 			}
 			else
 			{
-				//during testing I found a stat "a #3". What am I supposed to do with that?
-				//In an unknown stat appears, I'll flag it as unknown
+				//in case some unknown stat is encountered, make the result unknown
 				$iStat = -1;
 			}
 			if ($iStat < $supported) { $supported = $iStat; }
