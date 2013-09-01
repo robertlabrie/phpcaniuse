@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "php": ">=5.1"
+        "php": ">=5.1",
+		"garetjax/phpbrowscap": "dev-master"
     },
     "autoload": {
         "psr-0": {
