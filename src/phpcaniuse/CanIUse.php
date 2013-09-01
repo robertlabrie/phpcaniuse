@@ -42,8 +42,6 @@ class CanIUse
 			$stat = $browserCan[$f];	//get the stat for this feature
 			$iStat = $this->statsMap[$stat];
 			if ($iStat < $supported) { $supported = $iStat; }
-			//compare it to $supported
-			//set if lower
 		}
 		//at the end, invert statsMap and return the character
 		$statsMapFlip = array_flip($this->statsMap);
