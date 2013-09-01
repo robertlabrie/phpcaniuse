@@ -5,12 +5,21 @@ error_reporting(E_ALL);
 class CanIUse
 {
 	private $dataFile;
-	public $data;
+	private $data;
 	private $browser;
 	private $agent;	//this is the caniuseName
-	private $agentMap = Array('Firefox'=>'firefox','IE'=>'ie','Safari'=>'safari','Opera'=>'opera');
+	private $agentMap = Array('Firefox'=>'firefox','IE'=>'ie','Safari'=>'safari','Opera'=>'opera','Chrome'=>'chrome');
 	private $version;
-	private $statsMap = Array('n' => 0,'p' => 1, 'a x' => 2,'a' => 3,'y x' => 4,'y' = 5);
+	private $statsMap = Array('u' => -1, 'n' => 0, 'p' => 1, 'a x' => 2,'a' => 3,'y x' => 4,'y' => 5);
+	private $statsLegend = Array(
+		'u'=>'Unknown',
+		'n'=>'Not supported',
+		'p'=>'Polyfill required',
+		'a x'=>'Partial support with prefix',
+		'a'=>'Partial support',
+		'y x'=>'Support with prefix',
+		'y'=>'Supported',
+		);
 	public function __construct($browser = null,$caniusedata = null)
 	{
 		//load the data file first since we use it during a browser set
@@ -25,6 +34,20 @@ class CanIUse
 	public function check($feature)
 	{
 		if (!is_array($feature)) { $feature = Array($feature); }
+		
+		$supported = max($this->statsMap);	//the maximum level of feature support
+		$browserCan = $this->browserCan();	//get the browser capabilities
+		foreach ($feature as $f)
+		{
+			$stat = $browserCan[$f];	//get the stat for this feature
+			$iStat = $this->statsMap[$stat];
+			if ($iStat < $supported) { $supported = $iStat; }
+			//compare it to $supported
+			//set if lower
+		}
+		//at the end, invert statsMap and return the character
+		$statsMapFlip = array_flip($this->statsMap);
+		return $statsMapFlip[$supported];
 	}
 	/**
 	 *returns a hash array of features, useful for figuring out what feature set you want
@@ -100,4 +123,12 @@ class CanIUse
 		$this->data = json_decode($caniusedata,true,2048,JSON_BIGINT_AS_STRING);
 
 	}
+	/**
+	 *returns the json data array
+	 */
+	public function dataGet()
+	{
+		return $this->data;
+	}
+
 }
